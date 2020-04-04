@@ -9,21 +9,21 @@ public class Book extends SQLObject {
     private String genre;
     private String title;
     private int pageCount;
-    private int price;
+    private float price;
 
 
-    Book(ResultSet rs) throws SQLException {
+    public Book(ResultSet rs) throws SQLException {
         super(rs);
 
         id = rs.getInt("book_id");
         genre = rs.getString("genre");
         title = rs.getString("title");
         pageCount = rs.getInt("page_count");
-        price = rs.getInt("price");
+        price = rs.getFloat("price");
     }
 
 
-    Book(ResultSet rs, HashMap<String, String> fieldNames) throws SQLException {
+    public Book(ResultSet rs, HashMap<String, String> fieldNames) throws SQLException {
         super(rs);
 
         id = rs.getInt(fieldNames.get("book_id"));
@@ -46,7 +46,7 @@ public class Book extends SQLObject {
         return pageCount;
     }
 
-    public int getPrice() {
+    public float getPrice() {
         return price;
     }
 

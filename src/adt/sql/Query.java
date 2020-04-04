@@ -1,5 +1,6 @@
 package adt.sql;
 
+import javafx.util.Pair;
 import utils.config.Config;
 
 import java.io.BufferedReader;
@@ -11,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.StringJoiner;
 
 public class Query {
 
@@ -18,6 +20,11 @@ public class Query {
     protected PreparedStatement stmt = null;
 
     public Query(Connection conn, String queryFilename) throws SQLException {
+        this(conn, queryFilename, new OrderBy());
+    }
+
+
+    public Query(Connection conn, String queryFilename, OrderBy orderBy) throws SQLException {
         this.conn = conn;
 
         Path filePath = Paths.get(Config.getQueryPath().toString(), queryFilename);
@@ -36,6 +43,17 @@ public class Query {
             br.close();
             fr.close();
 
+            if (!orderBy.getPairs().isEmpty()) {
+                sb.append("\nORDER BY ");
+
+                StringJoiner sj = new StringJoiner(", ");
+                for (Pair<String, Ordering> pair : orderBy.getPairs()) {
+                    sj.add(String.format("%s %s", pair.getKey(), pair.getValue()));
+                }
+
+                sb.append(sj.toString());
+            }
+
             stmt = conn.prepareStatement(sb.toString());
 
         } catch (IOException e) {
@@ -43,12 +61,6 @@ public class Query {
         }
     }
 
-    protected void build(Object... objects) throws SQLException {
-        int i=1;
-        for (Object obj : objects) {
-            stmt.setObject(i++, obj);
-        }
-    }
 
     public ResultSet execute() throws SQLException {
         return stmt.executeQuery();

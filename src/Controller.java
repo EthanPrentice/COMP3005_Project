@@ -1,6 +1,17 @@
+import adt.sql.OrderBy;
+import adt.sql.Ordering;
+import adt.sql.Query;
+import adt.sql_tables.Book;
+import adt.sql_tables.Order;
+import adt.sql_tables.SQLObject;
+import adt.sql_tables.SoldItem;
+import queries.GetBooksInStock;
+import queries.GetItemsInOrder;
+import queries.GetUserOrders;
 import utils.config.Config;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
 
@@ -15,6 +26,17 @@ public class Controller {
         try {
             System.out.printf("\nConnecting to %s\n\n", Config.getDBConfig().getUrl());
             conn = getConnection(Config.getDBConfig().getUrl());
+
+            OrderBy orderBy = new OrderBy();
+            orderBy.add("price", Ordering.DESC);
+
+            GetBooksInStock query = new GetBooksInStock(conn, orderBy);
+
+            ArrayList<Book> results = query.getBooks();
+            for (SQLObject res : results) {
+                System.out.println(res);
+            }
+
         }
         catch (SQLException e) {
             System.err.println(e.toString());
@@ -24,7 +46,7 @@ public class Controller {
 
     private void setDBName() {
       Scanner scanner = new Scanner(System.in);
-      System.out.print("Database PersonName: ");
+      System.out.print("Database Name: ");
       String dbName = scanner.next();
       Config.getDBConfig().setDBName(dbName);
     }

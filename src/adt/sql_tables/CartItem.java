@@ -30,7 +30,7 @@ public class CartItem extends SQLObject {
         return quantity;
     }
 
-    public int getSubtotal() {
+    public float getSubtotal() {
         return book.getPrice() * quantity;
     }
 

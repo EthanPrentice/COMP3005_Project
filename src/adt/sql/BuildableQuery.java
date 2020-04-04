@@ -9,7 +9,6 @@ public class BuildableQuery extends Query {
         super(conn, queryFilename);
     }
 
-    @Override
     public void build(Object... objects) throws SQLException {
         int i=1;
         for (Object obj : objects) {

@@ -5,18 +5,20 @@ import java.sql.SQLException;
 
 public class SoldItem extends SQLObject {
 
-    private int pricePerUnit;
+    private Book book;
+    private float pricePerUnit;
     private int quantity;
 
     public SoldItem(ResultSet rs) throws SQLException {
         super(rs);
 
         id = rs.getInt("sold_item_id");
-        pricePerUnit = rs.getInt("price_per_unit");
+        book = new Book(rs);
+        pricePerUnit = rs.getFloat("price_per_unit");
         quantity = rs.getInt("quantity");
     }
 
-    public int getPricePerUnit() {
+    public float getPricePerUnit() {
         return pricePerUnit;
     }
 
@@ -24,8 +26,14 @@ public class SoldItem extends SQLObject {
         return quantity;
     }
 
-    public int getSubtotal() {
+    public float getSubtotal() {
         return pricePerUnit * quantity;
+    }
+
+    @Override
+    public String toString() {
+        String formatStr = "SoldItem(%3d, %3.2f, %2d, %s";
+        return String.format(formatStr, id, pricePerUnit, quantity, book.toString());
     }
 
 }
