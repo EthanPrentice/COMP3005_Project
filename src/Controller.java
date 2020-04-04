@@ -24,7 +24,7 @@ public class Controller {
 
     private void setDBName() {
       Scanner scanner = new Scanner(System.in);
-      System.out.print("Database Name: ");
+      System.out.print("Database PersonName: ");
       String dbName = scanner.next();
       Config.getDBConfig().setDBName(dbName);
     }

@@ -5,12 +5,18 @@ import java.sql.SQLException;
 
 public abstract class SQLObject {
 
-    SQLObject(ResultSet rs) throws SQLException {
+    protected Integer id;
 
+    SQLObject(ResultSet rs) throws SQLException {
+        id = null;
     }
 
     SQLObject() {
+        id = null;
+    }
 
+    public Integer getId() {
+        return id;
     }
 
 }

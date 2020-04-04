@@ -6,54 +6,49 @@ import java.util.ArrayList;
 
 public class Cart extends SQLObject {
 
-    private Integer id;
-    private ArrayList<CartItem> items;
     private User ownedBy;
 
     Cart() {
-        items = new ArrayList<>();
+        id = null;
         ownedBy = null;
     }
 
     Cart(ResultSet rs) throws SQLException {
         super(rs);
-
         id = rs.getInt("cart_id");
+
+        // TODO: maybe get this from a query instead of storing it?
+        // TODO: can also store and run a query once in constructor since cart should never change owners
+        ownedBy = null;
     }
 
-    Cart(ArrayList<CartItem> items) {
-        this.items = items;
-    }
-
-    Cart(ArrayList<CartItem> items, User ownedBy) {
-        this(items);
+    Cart(User ownedBy) {
         this.ownedBy = ownedBy;
     }
 
     public void addItem(CartItem item) {
-        items.add(item);
         // TODO: Add item to database
     }
 
     public void removeItem(int itemId) {
-        for (int i = 0; i < items.size(); ++i) {
-            if (itemId == items.get(i).getId()) {
-                items.remove(i);
-                // TODO: Remove item from database
-            }
-        }
-    }
-
-    public Integer getId() {
-        return id;
+        // TODO: Remove item from database
     }
 
     public ArrayList<CartItem> getItems() {
-        return items;
+        // TODO: implement to run query getting cart items
+        return null;
     }
 
     public User getOwnedBy() {
         return ownedBy;
     }
+
+
+    @Override
+    public String toString() {
+        String formatStr = "Cart(%3d, %s)";
+        return String.format(formatStr, id, ownedBy);
+    }
+
 
 }

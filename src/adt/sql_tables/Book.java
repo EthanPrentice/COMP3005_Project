@@ -6,7 +6,6 @@ import java.util.HashMap;
 
 public class Book extends SQLObject {
 
-    private int id;
     private String genre;
     private String title;
     private int pageCount;
@@ -35,10 +34,6 @@ public class Book extends SQLObject {
     }
 
 
-    public int getId() {
-        return id;
-    }
-
     public String getGenre() {
         return genre;
     }
@@ -55,5 +50,9 @@ public class Book extends SQLObject {
         return price;
     }
 
-
+    @Override
+    public String toString() {
+        String formatStr = "Book(%3d, %s, %s, %3d, %3.2f)";
+        return String.format(formatStr, id, title, genre, pageCount, price);
+    }
 }

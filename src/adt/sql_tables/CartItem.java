@@ -5,7 +5,6 @@ import java.sql.SQLException;
 
 public class CartItem extends SQLObject {
 
-    private Integer id;
     private Book book;
     private int quantity;
 
@@ -23,10 +22,6 @@ public class CartItem extends SQLObject {
         quantity = rs.getInt("quantity");
     }
 
-    public Integer getId() {
-        return id;
-    }
-
     public Book getBook() {
         return book;
     }
@@ -38,5 +33,12 @@ public class CartItem extends SQLObject {
     public int getSubtotal() {
         return book.getPrice() * quantity;
     }
+
+    @Override
+    public String toString() {
+        String formatStr = "CartItem(%3d, book_id: %3d, %d)";
+        return String.format(formatStr, id, book.getId(), quantity);
+    }
+
 
 }
