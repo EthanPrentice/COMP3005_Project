@@ -62,13 +62,18 @@ public class CreateOrderFromCart implements MultiUpdate {
         return orderId;
     }
 
-    private void addItems(int orderId) throws SQLException {
+    private void addItems(int orderId) throws SQLException, IllegalStateException {
         InsertItemInOrder insertItemInOrder;
         InsertBookSold insertBookSold;
         InsertSoldItem insertSoldItem;
 
         GetItemsInCart getItemsInCart = new GetItemsInCart(conn, cartId);
         ArrayList<CartItem> items = getItemsInCart.getItems();
+
+        if (items.isEmpty()) {
+            conn.rollback();
+            throw new IllegalStateException("Cannot create an order from an empty cart.");
+        }
 
         int soldItemId;
         ResultSet generatedKeys;
