@@ -11,7 +11,7 @@ public class GetCurrentUser extends Command {
     }
 
     @Override
-    public void run() {
+    public void run(String[] args) {
         User user = InfoManager.getCurrentUser();
         if (user == null) {
             System.out.println("There is no user logged in.");

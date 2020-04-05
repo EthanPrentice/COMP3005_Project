@@ -19,7 +19,7 @@ public class LoginCommand extends Command {
     }
 
     @Override
-    public void run() {
+    public void run(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("Username: ");

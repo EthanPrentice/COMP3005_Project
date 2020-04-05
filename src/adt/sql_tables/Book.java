@@ -1,5 +1,8 @@
 package adt.sql_tables;
 
+import queries.book.GetBookAuthor;
+
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -33,6 +36,10 @@ public class Book extends SQLObject {
         price = rs.getInt(fieldNames.get("price"));
     }
 
+    public Author getAuthor(Connection conn) throws SQLException {
+        GetBookAuthor getBookAuthor = new GetBookAuthor(conn, getId());
+        return getBookAuthor.get();
+    }
 
     public String getGenre() {
         return genre;

@@ -46,6 +46,10 @@ public class PersonName extends SQLObject {
         return last;
     }
 
+    public String getShort() {
+        return first + " " + last;
+    }
+
     public String getFull() {
         StringJoiner sj = new StringJoiner(" ");
         sj.add(prefix).add(first).add(middle).add(last);

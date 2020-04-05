@@ -1,5 +1,6 @@
 package input.commands;
 
+import input.commands.book.SearchBooksCommand;
 import input.commands.user.GetCurrentUser;
 import input.commands.user.LoginCommand;
 import input.commands.user.LogOutCommand;
@@ -22,6 +23,9 @@ public class CommandManager {
                 new LoginCommand(conn),
                 new LogOutCommand(),
                 new GetCurrentUser(),
+
+                new SearchBooksCommand(conn),
+
                 new ExitCommand()
         };
 
@@ -33,9 +37,12 @@ public class CommandManager {
     }
 
     public void runCommand(String commandName) throws IllegalArgumentException {
-        Command command = commands.get(commandName);
+
+        String[] args = commandName.split(" ");
+
+        Command command = commands.get(args[0]);
         if (command != null) {
-            command.run();
+            command.run(args);
         }
         else if (commandName.equals("/help")) {
             printHelp();
@@ -47,7 +54,7 @@ public class CommandManager {
 
     public void printHelp() {
         for (String key : commands.keySet()) {
-            commands.get(key).printHelp();
+            printHelp(key);
         }
     }
 

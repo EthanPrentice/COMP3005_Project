@@ -10,7 +10,7 @@ public class LogOutCommand extends Command {
     }
 
     @Override
-    public void run() {
+    public void run(String[] args) {
         InfoManager.setCurrentUser(null);
     }
 

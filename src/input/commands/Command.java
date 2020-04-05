@@ -2,7 +2,7 @@ package input.commands;
 
 import java.sql.SQLException;
 
-public abstract class Command implements Runnable {
+public abstract class Command {
 
     private String commandString;
 
@@ -15,7 +15,7 @@ public abstract class Command implements Runnable {
         System.out.printf(formatStr, commandString, getDescription());
     }
 
-    public abstract void run();
+    public abstract void run(String[] args);
     protected abstract String getDescription();
 
     public String getCommandString() {

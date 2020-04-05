@@ -7,7 +7,7 @@ public class ExitCommand extends Command {
     }
 
     @Override
-    public void run() {
+    public void run(String[] args) {
         System.exit(0);
     }
 

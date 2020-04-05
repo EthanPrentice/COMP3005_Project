@@ -34,7 +34,7 @@ public class Controller {
             String commandString;
             while(true) {
                 try {
-                    commandString = scanner.next();
+                    commandString = scanner.nextLine();
                     commandManager.runCommand(commandString);
                 }
                 catch (IllegalArgumentException e) {
