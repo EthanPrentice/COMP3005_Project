@@ -44,10 +44,10 @@ public class CreatePhoneNumber implements MultiUpdate {
         int phoneNumberId = insertPhoneNumber();
 
         GetPhoneTypeId getPhoneTypeId = new GetPhoneTypeId(conn, phoneNumber.getType());
-        Integer phoneTypeId = getPhoneTypeId.getPhoneTypeId();
+        Integer phoneTypeId = getPhoneTypeId.get();
         if (phoneTypeId == null) {
             getPhoneTypeId = new GetPhoneTypeId(conn, "OTHER");
-            phoneTypeId = getPhoneTypeId.getPhoneTypeId();
+            phoneTypeId = getPhoneTypeId.get();
         }
 
         InsertPhoneIsType insertPhoneIsType = new InsertPhoneIsType(conn, phoneNumberId, phoneTypeId);

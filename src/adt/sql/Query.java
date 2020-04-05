@@ -14,7 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.StringJoiner;
 
-public class Query {
+public abstract class Query<T> {
 
     protected Connection conn = null;
     protected PreparedStatement stmt = null;
@@ -65,5 +65,7 @@ public class Query {
     public ResultSet execute() throws SQLException {
         return stmt.executeQuery();
     }
+
+    public abstract T get() throws SQLException;
 
 }

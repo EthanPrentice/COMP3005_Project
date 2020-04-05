@@ -3,7 +3,7 @@ package adt.sql;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class BuildableQuery extends Query {
+public abstract class BuildableQuery<T> extends Query<T> {
 
     public BuildableQuery(Connection conn, String queryFilename) throws SQLException {
         super(conn, queryFilename);

@@ -32,7 +32,7 @@ public class Order extends SQLObject {
 
     public ArrayList<SoldItem> getItems(Connection conn) throws SQLException {
         GetItemsInOrder query = new GetItemsInOrder(conn, id);
-        return query.getItems();
+        return query.get();
     }
 
     public BillingInfo getBillingInfo() {

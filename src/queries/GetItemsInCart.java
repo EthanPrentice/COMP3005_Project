@@ -9,15 +9,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class GetItemsInCart extends BuildableQuery {
+public class GetItemsInCart extends BuildableQuery<ArrayList<CartItem>> {
 
     public GetItemsInCart(Connection conn, Integer cartId) throws SQLException {
         super(conn, "get_items_in_cart.sql");
         build(cartId);
     }
 
-
-    public ArrayList<CartItem> getItems() throws SQLException {
+    @Override
+    public ArrayList<CartItem> get() throws SQLException {
         ResultSet rs = execute();
 
         ArrayList<CartItem> items = new ArrayList<>();

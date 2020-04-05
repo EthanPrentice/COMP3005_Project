@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class GetUserOrders extends BuildableQuery {
+public class GetUserOrders extends BuildableQuery<ArrayList<Order>> {
 
     public GetUserOrders(Connection conn, Integer userId) throws SQLException {
         super(conn, "get_user_orders.sql");
@@ -17,7 +17,8 @@ public class GetUserOrders extends BuildableQuery {
     }
 
 
-    public ArrayList<Order> getOrders() throws SQLException {
+    @Override
+    public ArrayList<Order> get() throws SQLException {
         ResultSet rs = execute();
 
         ArrayList<Order> orders = new ArrayList<>();

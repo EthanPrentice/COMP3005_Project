@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class GetBooksInStock extends Query {
+public class GetBooksInStock extends Query<ArrayList<Book>> {
 
     public GetBooksInStock(Connection conn) throws SQLException {
         super(conn, "get_books_in_stock.sql");
@@ -19,7 +19,8 @@ public class GetBooksInStock extends Query {
         super(conn, "get_books_in_stock.sql", orderBy);
     }
 
-    public ArrayList<Book> getBooks() throws SQLException {
+    @Override
+    public ArrayList<Book> get() throws SQLException {
         ResultSet rs = execute();
         ArrayList<Book> books = new ArrayList<>();
 

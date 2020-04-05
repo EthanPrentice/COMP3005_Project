@@ -7,7 +7,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class GetCartOwner extends BuildableQuery {
+public class GetCartOwner extends BuildableQuery<User> {
 
     public GetCartOwner(Connection conn, Integer cartId) throws SQLException {
         super(conn, "get_cart_owner.sql");
@@ -15,7 +15,8 @@ public class GetCartOwner extends BuildableQuery {
     }
 
 
-    public User getOwner() throws SQLException {
+    @Override
+    public User get() throws SQLException {
         ResultSet rs = execute();
 
         if (rs.next()) {

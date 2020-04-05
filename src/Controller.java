@@ -3,7 +3,6 @@ import adt.sql.Ordering;
 import adt.sql_tables.*;
 import inserts.create_user.CreateUser;
 import queries.GetItemsInCart;
-import inserts.create_phone_number.CreatePhoneNumber;
 import utils.config.Config;
 
 import java.sql.*;
@@ -28,7 +27,7 @@ public class Controller {
 
             GetItemsInCart query = new GetItemsInCart(conn, 1);
 
-            ArrayList<CartItem> results = query.getItems();
+            ArrayList<CartItem> results = query.get();
             for (SQLObject res : results) {
                 System.out.println(res);
             }

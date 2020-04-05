@@ -92,4 +92,8 @@ public class CreateUser implements MultiUpdate {
             conn.commit();
         }
     }
+
+    public Integer getUserId() {
+        return userId;
+    }
 }
