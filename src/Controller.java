@@ -1,20 +1,12 @@
 import adt.sql.OrderBy;
 import adt.sql.Ordering;
-import adt.sql.Query;
 import adt.sql_tables.*;
-import queries.GetBooksInStock;
 import queries.GetItemsInCart;
-import queries.GetItemsInOrder;
-import queries.GetUserOrders;
-import updates.create_author.CreateAuthor;
-import updates.create_order_from_cart.CreateOrderFromCart;
-import updates.create_phone_number.CreatePhoneNumber;
-import updates.create_purchase_order.CreatePurchaseOrder;
+import inserts.create_phone_number.CreatePhoneNumber;
 import utils.config.Config;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Scanner;
 
 public class Controller {
