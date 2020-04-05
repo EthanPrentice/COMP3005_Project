@@ -12,7 +12,7 @@ public class PersonName extends SQLObject {
     private String prefix;
 
 
-    PersonName(ResultSet rs) throws SQLException {
+    public PersonName(ResultSet rs) throws SQLException {
         super(rs);
 
         id = rs.getInt("name_id");
@@ -22,7 +22,7 @@ public class PersonName extends SQLObject {
         prefix = rs.getString("prefix");
     }
 
-    PersonName(String first, String middle, String last, String prefix) {
+    public PersonName(String first, String middle, String last, String prefix) {
         this.id = null;
         this.first = first;
         this.middle = middle;

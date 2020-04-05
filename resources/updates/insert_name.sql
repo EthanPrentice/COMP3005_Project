@@ -4,3 +4,4 @@ INSERT INTO name (
     `last`,
     prefix
 )
+VALUES (?, ?, ?, ?)

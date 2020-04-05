@@ -6,6 +6,7 @@ import queries.GetBooksInStock;
 import queries.GetItemsInCart;
 import queries.GetItemsInOrder;
 import queries.GetUserOrders;
+import updates.create_author.CreateAuthor;
 import updates.create_order_from_cart.CreateOrderFromCart;
 import updates.create_purchase_order.CreatePurchaseOrder;
 import utils.config.Config;
@@ -41,8 +42,9 @@ public class Controller {
 //            CreateOrderFromCart update = new CreateOrderFromCart(conn, 1);
 //            update.executeUpdates();
 
-            CreatePurchaseOrder createPO = new CreatePurchaseOrder(conn, 9, 7, 22);
-            createPO.executeUpdates(true);
+            PersonName name = new PersonName("George", null, "Orwell", "Mr.");
+            CreateAuthor createAuthor = new CreateAuthor(conn, name);
+            createAuthor.executeUpdates();
 
         }
         catch (SQLException e) {
