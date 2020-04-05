@@ -8,6 +8,7 @@ import queries.GetItemsInOrder;
 import queries.GetUserOrders;
 import updates.create_author.CreateAuthor;
 import updates.create_order_from_cart.CreateOrderFromCart;
+import updates.create_phone_number.CreatePhoneNumber;
 import updates.create_purchase_order.CreatePurchaseOrder;
 import utils.config.Config;
 
@@ -42,9 +43,9 @@ public class Controller {
 //            CreateOrderFromCart update = new CreateOrderFromCart(conn, 1);
 //            update.executeUpdates();
 
-            PersonName name = new PersonName("George", null, "Orwell", "Mr.");
-            CreateAuthor createAuthor = new CreateAuthor(conn, name);
-            createAuthor.executeUpdates();
+            PhoneNumber phoneNumber = new PhoneNumber(1, "5745556801", "CELL");
+            CreatePhoneNumber createPhoneNumber = new CreatePhoneNumber(conn, phoneNumber);
+            createPhoneNumber.executeUpdates(true);
 
         }
         catch (SQLException e) {

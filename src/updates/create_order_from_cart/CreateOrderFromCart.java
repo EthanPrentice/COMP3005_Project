@@ -102,7 +102,6 @@ public class CreateOrderFromCart implements MultiUpdate {
     }
 
     private int addBillingInfo(int orderId) throws SQLException {
-
         CreateBillingInfo createBillingInfo = new CreateBillingInfo(conn, billingInfo.getName(), billingInfo.getAddress());
         createBillingInfo.executeUpdates(false);
 

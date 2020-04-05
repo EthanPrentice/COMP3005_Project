@@ -68,4 +68,8 @@ public class CreateAuthor implements MultiUpdate {
             conn.commit();
         }
     }
+
+    public Integer getAuthorId() {
+        return authorId;
+    }
 }
