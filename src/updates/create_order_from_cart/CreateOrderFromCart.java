@@ -53,6 +53,7 @@ public class CreateOrderFromCart implements MultiUpdate {
         GetCartOwner getCartOwner = new GetCartOwner(conn, cartId);
         User cartOwner = getCartOwner.getOwner();
         if (cartOwner == null) {
+            conn.rollback();
             throw new IllegalStateException("Cannot create order when no user is logged in.");
         }
         InsertUserOrder insertUserOrder = new InsertUserOrder(conn, orderId, cartOwner.getId());

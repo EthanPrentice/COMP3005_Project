@@ -39,6 +39,7 @@ public class CreatePurchaseOrder implements MultiUpdate {
             purchaseOrderId = rs.getInt(1);
         }
         else {
+            conn.rollback();
             throw new SQLException("Could not insert new purchase order. Rolling back.");
         }
 
