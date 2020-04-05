@@ -20,7 +20,7 @@ public class CreateShippingInfo implements MultiUpdate {
 
     private Integer shippingInfoId = null;
 
-    public CreateShippingInfo(Connection conn, PersonName name, Address address) throws SQLException {
+    public CreateShippingInfo(Connection conn, PersonName name, Address address) {
         this.conn = conn;
         this.name = name;
         this.address = address;
@@ -67,9 +67,17 @@ public class CreateShippingInfo implements MultiUpdate {
         }
     }
 
+    public Integer getShippingInfoId() {
+        return shippingInfoId;
+    }
 
     @Override
     public void executeUpdates() throws SQLException {
+        executeUpdates(true);
+    }
+
+    @Override
+    public void executeUpdates(boolean commit) throws SQLException {
         int nameId = insertName();
         int addressId = insertAddress();
         int shippingInfoId = insertShippingInfo();
@@ -81,7 +89,9 @@ public class CreateShippingInfo implements MultiUpdate {
         insertShippingAddress.executeUpdate(false);
 
         this.shippingInfoId = shippingInfoId;
-        conn.commit();
+        if (commit) {
+            conn.commit();
+        }
     }
     
 }

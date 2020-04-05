@@ -2,6 +2,7 @@ package updates.create_billing_info;
 
 import adt.sql.MultiUpdate;
 import adt.sql_tables.Address;
+import adt.sql_tables.BillingInfo;
 import adt.sql_tables.PersonName;
 import updates.InsertAddress;
 import updates.InsertName;
@@ -19,7 +20,7 @@ public class CreateBillingInfo implements MultiUpdate {
 
     private Integer billingInfoId = null;
 
-    public CreateBillingInfo(Connection conn, PersonName name, Address address) throws SQLException {
+    public CreateBillingInfo(Connection conn, PersonName name, Address address) {
         this.conn = conn;
         this.name = name;
         this.address = address;
@@ -66,9 +67,17 @@ public class CreateBillingInfo implements MultiUpdate {
         }
     }
 
+    public Integer getBillingInfoId() {
+        return billingInfoId;
+    }
 
     @Override
     public void executeUpdates() throws SQLException {
+        executeUpdates(true);
+    }
+
+    @Override
+    public void executeUpdates(boolean commit) throws SQLException {
         int nameId = insertName();
         int addressId = insertAddress();
         int billingInfoId = insertBillingInfo();
@@ -80,6 +89,9 @@ public class CreateBillingInfo implements MultiUpdate {
         insertBillingAddress.executeUpdate(false);
 
         this.billingInfoId = billingInfoId;
-        conn.commit();
+
+        if (commit) {
+            conn.commit();
+        }
     }
 }

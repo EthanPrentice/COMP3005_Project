@@ -1,11 +1,15 @@
 package updates.create_order_from_cart;
 
 import adt.sql.MultiUpdate;
+import adt.sql_tables.BillingInfo;
 import adt.sql_tables.CartItem;
+import adt.sql_tables.ShippingInfo;
 import adt.sql_tables.User;
 import queries.GetCartOwner;
 import queries.GetItemsInCart;
 import updates.clear_cart.ClearCart;
+import updates.create_billing_info.CreateBillingInfo;
+import updates.create_shipping_info.CreateShippingInfo;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -15,18 +19,18 @@ import java.util.ArrayList;
 public class CreateOrderFromCart implements MultiUpdate {
 
     private Connection conn;
-    private GetItemsInCart getItemsInCart;
-    private ClearCart clearCartUpdate;
-    private GetCartOwner getCartOwner;
+
+    private int cartId;
+    private BillingInfo billingInfo;
+    private ShippingInfo shippingInfo;
 
     private Integer orderId = null;
 
-    public CreateOrderFromCart(Connection conn, Integer cartId) throws SQLException {
+    public CreateOrderFromCart(Connection conn, Integer cartId, BillingInfo billingInfo, ShippingInfo shippingInfo) throws SQLException {
         this.conn = conn;
-
-        getItemsInCart = new GetItemsInCart(conn, cartId);
-        clearCartUpdate = new ClearCart(conn, cartId);
-        getCartOwner = new GetCartOwner(conn, cartId);
+        this.cartId = cartId;
+        this.billingInfo = billingInfo;
+        this.shippingInfo = shippingInfo;
     }
 
 
@@ -46,6 +50,7 @@ public class CreateOrderFromCart implements MultiUpdate {
         }
 
         // associate order with the user
+        GetCartOwner getCartOwner = new GetCartOwner(conn, cartId);
         User cartOwner = getCartOwner.getOwner();
         if (cartOwner == null) {
             throw new IllegalStateException("Cannot create order when no user is logged in.");
@@ -61,6 +66,7 @@ public class CreateOrderFromCart implements MultiUpdate {
         InsertBookSold insertBookSold;
         InsertSoldItem insertSoldItem;
 
+        GetItemsInCart getItemsInCart = new GetItemsInCart(conn, cartId);
         ArrayList<CartItem> items = getItemsInCart.getItems();
 
         int soldItemId;
@@ -89,18 +95,58 @@ public class CreateOrderFromCart implements MultiUpdate {
         }
     }
 
+    private int addBillingInfo(int orderId) throws SQLException {
+
+        CreateBillingInfo createBillingInfo = new CreateBillingInfo(conn, billingInfo.getName(), billingInfo.getAddress());
+        createBillingInfo.executeUpdates(false);
+
+        int billingInfoId = createBillingInfo.getBillingInfoId();
+
+        InsertOrderBilling insertOrderBilling = new InsertOrderBilling(conn, orderId, billingInfoId);
+        insertOrderBilling.executeUpdate(false);
+
+        return billingInfoId;
+    }
+
+
+    private int addShippingInfo(int orderId) throws SQLException {
+        CreateShippingInfo createShippingInfo = new CreateShippingInfo(conn, shippingInfo.getName(), shippingInfo.getAddress());
+        createShippingInfo.executeUpdates(false);
+
+        int shippingInfoId = createShippingInfo.getShippingInfoId();
+
+        InsertOrderShipping insertOrderShipping = new InsertOrderShipping(conn, orderId, shippingInfoId);
+        insertOrderShipping.executeUpdate(false);
+
+        return shippingInfoId;
+    }
+
+
     @Override
     public void executeUpdates() throws SQLException, IllegalStateException {
+        executeUpdates(true);
+    }
+
+
+    @Override
+    public void executeUpdates(boolean commit) throws SQLException, IllegalStateException {
         int orderId = createOrder();
         addItems(orderId);
 
+        addBillingInfo(orderId);
+        addShippingInfo(orderId);
+
         // Delete all CartItems that were in the cart.
         // Their relations will be deleted through cascading
+        ClearCart clearCartUpdate = new ClearCart(conn, cartId);
         clearCartUpdate.executeUpdate(false);
 
         // if successful assign orderId so it can be accessed outside of Update object
         this.orderId = orderId;
-        conn.commit();
+
+        if (commit) {
+            conn.commit();
+        }
     }
 
     public Integer getOrderId() {

@@ -37,8 +37,8 @@ public class Controller {
                 System.out.println(res);
             }
 
-            CreateOrderFromCart update = new CreateOrderFromCart(conn, 1);
-            update.executeUpdates();
+//            CreateOrderFromCart update = new CreateOrderFromCart(conn, 1);
+//            update.executeUpdates();
 
         }
         catch (SQLException e) {
