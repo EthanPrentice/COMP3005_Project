@@ -26,7 +26,7 @@ public class Order extends SQLObject {
         id = rs.getInt("order_id");
         placedDate = rs.getTimestamp("placed_date");
         shippedDate = rs.getTimestamp("shipped_date");
-        estimatedDelivery = rs.getTimestamp("estimate_delivery");
+        estimatedDelivery = rs.getTimestamp("estimated_delivery");
         delivered = rs.getBoolean("delivered");
     }
 

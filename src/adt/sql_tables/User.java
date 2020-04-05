@@ -23,10 +23,11 @@ public class User extends SQLObject {
         email = rs.getString("email");
         isAdmin = rs.getBoolean("is_admin");
 
-        defaultBilling = new BillingInfo(rs);
-        defaultShipping = new ShippingInfo(rs);
+        // TODO: Change below to queries in getters
+//        defaultBilling = new BillingInfo(rs);
+//        defaultShipping = new ShippingInfo(rs);
 
-        cart = new Cart(rs);
+//        cart = new Cart(rs);
     }
 
     private ArrayList<PhoneNumber> getPhoneNumbers() {

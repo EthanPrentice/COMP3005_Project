@@ -1,13 +1,12 @@
 import adt.sql.OrderBy;
 import adt.sql.Ordering;
 import adt.sql.Query;
-import adt.sql_tables.Book;
-import adt.sql_tables.Order;
-import adt.sql_tables.SQLObject;
-import adt.sql_tables.SoldItem;
+import adt.sql_tables.*;
 import queries.GetBooksInStock;
+import queries.GetItemsInCart;
 import queries.GetItemsInOrder;
 import queries.GetUserOrders;
+import updates.create_order_from_cart.CreateOrderFromCart;
 import utils.config.Config;
 
 import java.sql.*;
@@ -26,16 +25,20 @@ public class Controller {
         try {
             System.out.printf("\nConnecting to %s\n\n", Config.getDBConfig().getUrl());
             conn = getConnection(Config.getDBConfig().getUrl());
+            conn.setAutoCommit(false);
 
             OrderBy orderBy = new OrderBy();
             orderBy.add("price", Ordering.DESC);
 
-            GetBooksInStock query = new GetBooksInStock(conn, orderBy);
+            GetItemsInCart query = new GetItemsInCart(conn, 1);
 
-            ArrayList<Book> results = query.getBooks();
+            ArrayList<CartItem> results = query.getItems();
             for (SQLObject res : results) {
                 System.out.println(res);
             }
+
+            CreateOrderFromCart update = new CreateOrderFromCart(conn, 1);
+            update.executeUpdates();
 
         }
         catch (SQLException e) {

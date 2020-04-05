@@ -8,13 +8,13 @@ public class CartItem extends SQLObject {
     private Book book;
     private int quantity;
 
-    CartItem(Book book, int quantity) {
+    public CartItem(Book book, int quantity) {
         this.id = null;
         this.book = book;
         this.quantity = quantity;
     }
 
-    CartItem(ResultSet rs) throws SQLException {
+    public CartItem(ResultSet rs) throws SQLException {
         super(rs);
 
         id = rs.getInt("cart_item_id");

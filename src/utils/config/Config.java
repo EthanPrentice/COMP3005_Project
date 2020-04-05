@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 public class Config {
     private final static Path basePath = Paths.get(System.getProperty("user.dir"));
     private final static Path queryPath = Paths.get(basePath.toString(), "resources", "queries");
+    private final static Path updatesPath = Paths.get(basePath.toString(), "resources", "updates");
 
     private final static DBConfig dbConfig = new DBConfig();
 
@@ -16,6 +17,11 @@ public class Config {
     public static Path getQueryPath() {
         return queryPath;
     }
+
+    public static Path getUpdatesPath() {
+        return updatesPath;
+    }
+
 
     public static DBConfig getDBConfig() {
         return dbConfig;
