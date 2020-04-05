@@ -42,7 +42,7 @@ public class Update {
         }
     }
 
-    public void setParams(Object... objects) throws SQLException {
+    protected void setParams(Object... objects) throws SQLException {
         int i=1;
         for (Object obj : objects) {
             if (obj == null) {

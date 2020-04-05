@@ -1,6 +1,7 @@
 import adt.sql.OrderBy;
 import adt.sql.Ordering;
 import adt.sql_tables.*;
+import inserts.create_user.CreateUser;
 import queries.GetItemsInCart;
 import inserts.create_phone_number.CreatePhoneNumber;
 import utils.config.Config;
@@ -35,9 +36,17 @@ public class Controller {
 //            CreateOrderFromCart update = new CreateOrderFromCart(conn, 1);
 //            update.executeUpdates();
 
-            PhoneNumber phoneNumber = new PhoneNumber(1, "5745556801", "CELL");
-            CreatePhoneNumber createPhoneNumber = new CreatePhoneNumber(conn, phoneNumber);
-            createPhoneNumber.executeUpdates(true);
+            CreateUser createUser = new CreateUser(
+                    conn,
+                    "user123",
+                    "user123@yahoo.ca",
+                    "pass123",
+                    null,
+                    null,
+                    null
+            );
+
+            createUser.executeUpdates(true);
 
         }
         catch (SQLException e) {
