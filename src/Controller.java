@@ -7,6 +7,7 @@ import queries.GetItemsInCart;
 import queries.GetItemsInOrder;
 import queries.GetUserOrders;
 import updates.create_order_from_cart.CreateOrderFromCart;
+import updates.create_purchase_order.CreatePurchaseOrder;
 import utils.config.Config;
 
 import java.sql.*;
@@ -39,6 +40,9 @@ public class Controller {
 
 //            CreateOrderFromCart update = new CreateOrderFromCart(conn, 1);
 //            update.executeUpdates();
+
+            CreatePurchaseOrder createPO = new CreatePurchaseOrder(conn, 9, 7, 22);
+            createPO.executeUpdates(true);
 
         }
         catch (SQLException e) {

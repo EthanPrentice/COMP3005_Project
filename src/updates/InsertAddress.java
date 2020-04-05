@@ -9,7 +9,7 @@ import java.sql.SQLException;
 public class InsertAddress extends Update {
 
     public InsertAddress(Connection conn, Address address) throws SQLException {
-        super(conn, "insert_name.sql");
+        super(conn, "insert_address.sql");
         setParams(
                 address.getPostalCode(),
                 address.getUnit(),
