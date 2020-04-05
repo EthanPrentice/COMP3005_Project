@@ -1,6 +1,8 @@
 import adt.sql.OrderBy;
 import adt.sql.Ordering;
 import adt.sql_tables.*;
+import input.commands.Command;
+import input.commands.CommandManager;
 import inserts.create_publisher.CreatePublisher;
 import inserts.create_user.CreateUser;
 import queries.GetItemsInCart;
@@ -10,6 +12,7 @@ import utils.config.Config;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Controller {
@@ -25,52 +28,19 @@ public class Controller {
             conn = getConnection(Config.getDBConfig().getUrl());
             conn.setAutoCommit(false);
 
-            OrderBy orderBy = new OrderBy();
-            orderBy.add("price", Ordering.DESC);
+            CommandManager commandManager = new CommandManager(conn);
 
-            GetItemsInCart query = new GetItemsInCart(conn, 1);
-
-            ArrayList<CartItem> results = query.get();
-            for (SQLObject res : results) {
-                System.out.println(res);
+            Scanner scanner = new Scanner(System.in);
+            String commandString;
+            while(true) {
+                try {
+                    commandString = scanner.next();
+                    commandManager.runCommand(commandString);
+                }
+                catch (IllegalArgumentException e) {
+                    System.err.println(e.getMessage());
+                }
             }
-
-//            CreateOrderFromCart update = new CreateOrderFromCart(conn, 1);
-//            update.executeUpdates();
-
-//            PhoneNumber phoneOne = new PhoneNumber(1, "2265556241", "CORPORATE");
-//            PhoneNumber phoneTwo = new PhoneNumber(2, "3155556001", "CORPORATE");
-//            ArrayList<PhoneNumber> phoneNumbers = new ArrayList<>(Arrays.asList(phoneOne, phoneTwo));
-//
-//            Address address = new Address("N3B3N9", null, 223, "Brookmead Street", "Elmira", "ON", "Canada");
-//            ArrayList<Address> addresses = new ArrayList<>(Arrays.asList(address));
-//
-//            BankAccount bankAccount = new BankAccount(1, 31, "514865002");
-//
-//            CreatePublisher createPublisher = new CreatePublisher(conn, "Elmira Publishing", bankAccount, phoneNumbers, addresses);
-//
-//            createPublisher.executeUpdates(true);
-
-
-            GetPublisher getPublisher = new GetPublisher(conn, 8);
-            Publisher publisher = getPublisher.get();
-
-            System.out.println("Publisher: " + publisher.getName());
-
-            BankAccount bankAcc = publisher.getBankAccount(conn);
-            System.out.println("Bank account ID: " + bankAcc.getId());
-
-            System.out.println("Address IDs:");
-            for (Address addr : publisher.getAddresses(conn)) {
-                System.out.println(addr.getId());
-            }
-
-            System.out.println("Phone IDs: ");
-            for (PhoneNumber phone : publisher.getPhoneNumbers(conn)) {
-                System.out.println(phone.getId());
-            }
-
-
 
         }
         catch (SQLException e) {

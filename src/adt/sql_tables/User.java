@@ -46,5 +46,15 @@ public class User extends SQLObject {
         return String.format(formatStr, id, username, email, isAdmin);
     }
 
+    public String getUsername() {
+        return username;
+    }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
 }
