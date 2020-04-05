@@ -34,4 +34,31 @@ public class Address extends SQLObject {
         this.country = country;
     }
 
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public int getStreetNum() {
+        return streetNum;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public String getCountry() {
+        return country;
+    }
 }

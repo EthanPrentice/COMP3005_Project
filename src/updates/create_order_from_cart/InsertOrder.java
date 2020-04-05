@@ -6,10 +6,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
-public class CreateOrder extends Update {
+public class InsertOrder extends Update {
 
-    public CreateOrder(Connection conn) throws SQLException {
-        super(conn, "create_order_from_cart/create_order.sql");
+    public InsertOrder(Connection conn) throws SQLException {
+        super(conn, "create_order_from_cart/insert_order.sql");
         setParams(new Timestamp(System.currentTimeMillis()), null, null, false);
     }
 

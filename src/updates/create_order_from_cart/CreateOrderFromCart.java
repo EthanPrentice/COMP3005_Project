@@ -19,6 +19,8 @@ public class CreateOrderFromCart implements MultiUpdate {
     private ClearCart clearCartUpdate;
     private GetCartOwner getCartOwner;
 
+    private Integer orderId = null;
+
     public CreateOrderFromCart(Connection conn, Integer cartId) throws SQLException {
         this.conn = conn;
 
@@ -30,7 +32,7 @@ public class CreateOrderFromCart implements MultiUpdate {
 
     private int createOrder() throws SQLException, IllegalStateException {
         // create an empty order
-        CreateOrder createOrder = new CreateOrder(conn);
+        InsertOrder createOrder = new InsertOrder(conn);
         createOrder.executeUpdate(false);
         ResultSet generatedKeys = createOrder.getGeneratedKeys();
 
@@ -40,7 +42,7 @@ public class CreateOrderFromCart implements MultiUpdate {
         }
         else {
             conn.rollback();
-            throw new SQLException("Could not create a new order.  Rolling back.");
+            throw new SQLException("Could not insert a new order.  Rolling back.");
         }
 
         // associate order with the user
@@ -96,6 +98,12 @@ public class CreateOrderFromCart implements MultiUpdate {
         // Their relations will be deleted through cascading
         clearCartUpdate.executeUpdate(false);
 
+        // if successful assign orderId so it can be accessed outside of Update object
+        this.orderId = orderId;
         conn.commit();
+    }
+
+    public Integer getOrderId() {
+        return orderId;
     }
 }

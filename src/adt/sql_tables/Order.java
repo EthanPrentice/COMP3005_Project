@@ -35,6 +35,14 @@ public class Order extends SQLObject {
         return query.getItems();
     }
 
+    public BillingInfo getBillingInfo() {
+        return billingInfo;
+    }
+
+    public ShippingInfo getShippingInfo() {
+        return shippingInfo;
+    }
+
     public Timestamp getPlacedDate() {
         return placedDate;
     }

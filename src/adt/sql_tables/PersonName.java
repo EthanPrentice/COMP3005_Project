@@ -38,6 +38,10 @@ public class PersonName extends SQLObject {
         return first;
     }
 
+    public String getMiddle() {
+        return middle;
+    }
+
     public String getLast() {
         return last;
     }
