@@ -1,25 +1,29 @@
 package input.commands;
 
+import input.InfoManager;
+import input.commands.admin.AdminCommand;
+import input.commands.admin.ShowPrevMonthSales;
 import input.commands.book.SearchBooksCommand;
 import input.commands.user.GetCurrentUser;
 import input.commands.user.LoginCommand;
 import input.commands.user.LogOutCommand;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class CommandManager {
 
-    private HashMap<String, Command> commands;
+    private HashMap<String, Command> commandMap;
+    ArrayList<String> helpOrdering;
 
     public CommandManager(Connection conn) {
-        commands = buildCommandMap(conn);
-    }
-
-    private HashMap<String, Command> buildCommandMap(Connection conn) {
-        HashMap<String, Command> commandMap = new HashMap<>();
+        commandMap = new HashMap<>();
+        helpOrdering = new ArrayList<>();
 
         Command[] commands = {
+                new ShowPrevMonthSales(conn),
+
                 new LoginCommand(conn),
                 new LogOutCommand(),
                 new GetCurrentUser(),
@@ -31,18 +35,26 @@ public class CommandManager {
 
         for (Command command : commands) {
             commandMap.put(command.getCommandString(), command);
+            helpOrdering.add(command.getCommandString());
         }
-
-        return commandMap;
     }
 
     public void runCommand(String commandName) throws IllegalArgumentException {
-
         String[] args = commandName.split(" ");
 
-        Command command = commands.get(args[0]);
+        Command command = commandMap.get(args[0]);
         if (command != null) {
-            command.run(args);
+            if (command instanceof AdminCommand) {
+                if (InfoManager.isUserAdmin()) {
+                    command.run(args);
+                }
+                else {
+                    throw new IllegalArgumentException("You do not have permission for that command");
+                }
+            }
+            else {
+                command.run(args);
+            }
         }
         else if (commandName.equals("/help")) {
             printHelp();
@@ -53,12 +65,12 @@ public class CommandManager {
     }
 
     public void printHelp() {
-        for (String key : commands.keySet()) {
-            printHelp(key);
+        for (String commandName : helpOrdering) {
+            printHelp(commandName);
         }
     }
 
     public void printHelp(String commandName) {
-        commands.get(commandName).printHelp();
+        commandMap.get(commandName).printHelp();
     }
 }

@@ -7,11 +7,11 @@ public abstract class SQLObject {
 
     protected Integer id;
 
-    SQLObject(ResultSet rs) throws SQLException {
+    public SQLObject(ResultSet rs) throws SQLException {
         id = null;
     }
 
-    SQLObject() {
+    public SQLObject() {
         id = null;
     }
 

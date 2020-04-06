@@ -1,5 +1,8 @@
 package input.commands;
 
+import input.InfoManager;
+import input.commands.admin.AdminCommand;
+
 import java.sql.SQLException;
 
 public abstract class Command {
@@ -11,8 +14,13 @@ public abstract class Command {
     }
 
     public void printHelp() {
-        String formatStr = "%-15s\t%s\n";
-        System.out.printf(formatStr, commandString, getDescription());
+        String formatStr = "%-25s\t%s\n";
+        if (this instanceof AdminCommand && InfoManager.isUserAdmin()) {
+            System.out.printf(formatStr, commandString, "*" + getDescription() + "*");
+        }
+        else {
+            System.out.printf(formatStr, commandString, getDescription());
+        }
     }
 
     public abstract void run(String[] args);

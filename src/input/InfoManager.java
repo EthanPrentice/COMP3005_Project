@@ -14,4 +14,8 @@ public class InfoManager {
     public static void setCurrentUser(User currentUser) {
         InfoManager.currentUser = currentUser;
     }
+
+    public static boolean isUserAdmin() {
+        return currentUser != null && currentUser.isAdmin();
+    }
 }

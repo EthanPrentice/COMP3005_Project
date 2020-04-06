@@ -38,10 +38,10 @@ public class SearchBooksCommand extends Command {
             String headerFormat = "%4s | %-7s | %-60s | %-35s | %-20s | %5s\n";
             System.out.format(headerFormat, "ID", "Price", "Title", "Author", "Genre", "Pages");
 
+            DecimalFormat decimalFormat = new DecimalFormat("#0.00");
             String formatString = "%4d | $%6s | %-60s | %-35s | %-20s | %5d\n";
             for (Book book : books) {
 
-                DecimalFormat decimalFormat = new DecimalFormat("00.00");
                 String formattedPrice = decimalFormat.format(book.getPrice());
 
                 System.out.printf(formatString,

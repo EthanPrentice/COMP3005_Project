@@ -1,0 +1,1 @@
+SELECT * FROM prev_month_sales_report
