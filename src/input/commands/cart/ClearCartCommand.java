@@ -13,7 +13,7 @@ public class ClearCartCommand extends Command {
     private Connection conn;
 
     public ClearCartCommand(Connection conn) {
-        super("clear-cart", CommandCategory.CART);
+        super("/clear-cart", CommandCategory.CART);
         this.conn = conn;
     }
 
@@ -39,6 +39,6 @@ public class ClearCartCommand extends Command {
 
     @Override
     protected String getDescription() {
-        return null;
+        return "Clears the user's cart.";
     }
 }
