@@ -15,12 +15,9 @@ import java.util.HashMap;
 public class CommandManager {
 
     private HashMap<String, Command> commandMap;
-    ArrayList<String> helpOrdering;
+    private HashMap<CommandCategory, ArrayList<String>> helpOrdering;
 
     public CommandManager(Connection conn) {
-        commandMap = new HashMap<>();
-        helpOrdering = new ArrayList<>();
-
         Command[] commands = {
                 new ShowPrevMonthSales(conn),
 
@@ -33,11 +30,31 @@ public class CommandManager {
                 new ExitCommand()
         };
 
+        buildCommandMap(commands);
+        buildHelpMap(commands);
+    }
+
+    private void buildCommandMap(Command[] commands) {
+        commandMap = new HashMap<>();
+
         for (Command command : commands) {
             commandMap.put(command.getCommandString(), command);
-            helpOrdering.add(command.getCommandString());
         }
     }
+
+    private void buildHelpMap(Command[] commands) {
+        helpOrdering = new HashMap<>();
+
+        for (Command command : commands) {
+            ArrayList<String> categoryCommands = helpOrdering.getOrDefault(command.getCategory(), new ArrayList<>());
+            categoryCommands.add(command.getCommandString());
+
+            if (!helpOrdering.containsKey(command.getCategory())) {
+                helpOrdering.put(command.getCategory(), categoryCommands);
+            }
+        }
+    }
+
 
     public void runCommand(String commandName) throws IllegalArgumentException {
         String[] args = commandName.split(" ");
@@ -64,13 +81,22 @@ public class CommandManager {
         }
     }
 
-    public void printHelp() {
-        for (String commandName : helpOrdering) {
-            printHelp(commandName);
+    private void printHelp() {
+        for (CommandCategory category : helpOrdering.keySet()) {
+            if (!InfoManager.isUserAdmin() && category == CommandCategory.ADMIN) {
+                continue;
+            }
+
+            System.out.println(category.getValue());
+
+            for (String commandName : helpOrdering.get(category)) {
+                printHelp(commandName);
+            }
+            System.out.println("");
         }
     }
 
-    public void printHelp(String commandName) {
+    private void printHelp(String commandName) {
         commandMap.get(commandName).printHelp();
     }
 }

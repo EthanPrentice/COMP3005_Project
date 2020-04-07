@@ -3,14 +3,14 @@ package input.commands;
 import input.InfoManager;
 import input.commands.admin.AdminCommand;
 
-import java.sql.SQLException;
-
 public abstract class Command {
 
     private String commandString;
+    private CommandCategory category;
 
-    protected Command(String commandString) {
+    protected Command(String commandString, CommandCategory category) {
         this.commandString = commandString;
+        this.category = category;
     }
 
     public void printHelp() {
@@ -18,7 +18,7 @@ public abstract class Command {
         if (this instanceof AdminCommand && InfoManager.isUserAdmin()) {
             System.out.printf(formatStr, commandString, "*" + getDescription() + "*");
         }
-        else {
+        else if (!(this instanceof AdminCommand)) {
             System.out.printf(formatStr, commandString, getDescription());
         }
     }
@@ -28,5 +28,9 @@ public abstract class Command {
 
     public String getCommandString() {
         return commandString;
+    }
+
+    public CommandCategory getCategory() {
+        return category;
     }
 }

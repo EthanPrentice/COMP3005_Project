@@ -1,5 +1,6 @@
 package adt.sql_tables;
 
+import queries.GetSupplierPricing;
 import queries.book.GetBookAuthor;
 
 import java.sql.Connection;
@@ -39,6 +40,11 @@ public class Book extends SQLObject {
     public Author getAuthor(Connection conn) throws SQLException {
         GetBookAuthor getBookAuthor = new GetBookAuthor(conn, getId());
         return getBookAuthor.get();
+    }
+
+    public SupplierPricing getSupplierPricing(Connection conn) throws SQLException {
+        GetSupplierPricing getSupplierPricing = new GetSupplierPricing(conn, id);
+        return getSupplierPricing.get();
     }
 
     public String getGenre() {

@@ -2,6 +2,7 @@ package input.commands.book;
 
 import adt.sql_tables.Book;
 import input.commands.Command;
+import input.commands.CommandCategory;
 import queries.book.SearchBooks;
 
 import java.sql.Connection;
@@ -15,7 +16,7 @@ public class SearchBooksCommand extends Command {
     private Connection conn;
 
     public SearchBooksCommand(Connection conn) {
-        super("/search");
+        super("/search", CommandCategory.GENERAL);
         this.conn = conn;
     }
 
@@ -62,6 +63,6 @@ public class SearchBooksCommand extends Command {
 
     @Override
     protected String getDescription() {
-        return null;
+        return "Searches the database for books containing keywords as command arguments.";
     }
 }

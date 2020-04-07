@@ -79,7 +79,8 @@ public class CreateOrderFromCart implements MultiUpdate {
         ResultSet generatedKeys;
         for (CartItem item : items) {
             // insert sold item
-            insertSoldItem = new InsertSoldItem(conn, item.getBook().getPrice(), item.getQuantity());
+            float publisherRate = item.getBook().getSupplierPricing(conn).getPublisherRate();
+            insertSoldItem = new InsertSoldItem(conn, item.getBook().getPrice(), publisherRate, item.getQuantity());
             insertSoldItem.executeUpdate(false);
 
             generatedKeys = insertSoldItem.getGeneratedKeys();

@@ -3,7 +3,7 @@ package input.commands;
 public class ExitCommand extends Command {
 
     public ExitCommand() {
-        super("/exit");
+        super("/exit", CommandCategory.OTHER);
     }
 
     @Override

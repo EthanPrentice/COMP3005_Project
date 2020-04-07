@@ -7,6 +7,7 @@ public class SoldItem extends SQLObject {
 
     private Book book;
     private float pricePerUnit;
+    private float publisherRate;
     private int quantity;
 
     public SoldItem(ResultSet rs) throws SQLException {
@@ -15,11 +16,16 @@ public class SoldItem extends SQLObject {
         id = rs.getInt("sold_item_id");
         book = new Book(rs);
         pricePerUnit = rs.getFloat("price_per_unit");
+        publisherRate = rs.getFloat("publisher_rate");
         quantity = rs.getInt("quantity");
     }
 
     public float getPricePerUnit() {
         return pricePerUnit;
+    }
+
+    public float getPublisherRate() {
+        return publisherRate;
     }
 
     public int getQuantity() {

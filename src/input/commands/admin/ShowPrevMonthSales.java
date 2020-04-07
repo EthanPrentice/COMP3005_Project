@@ -1,6 +1,7 @@
 package input.commands.admin;
 
 import adt.views.BookSalesInfo;
+import input.commands.CommandCategory;
 import queries.admin.GetPrevMonthSalesReport;
 
 import java.sql.Connection;
@@ -13,7 +14,7 @@ public class ShowPrevMonthSales extends AdminCommand {
     private Connection conn;
 
     public ShowPrevMonthSales(Connection conn) {
-        super("/prev-month-sales");
+        super("/prev-month-sales", CommandCategory.ADMIN);
         this.conn = conn;
     }
 

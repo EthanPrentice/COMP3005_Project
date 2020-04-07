@@ -3,11 +3,12 @@ package input.commands.user;
 import adt.sql_tables.User;
 import input.InfoManager;
 import input.commands.Command;
+import input.commands.CommandCategory;
 
 public class GetCurrentUser extends Command {
 
     public GetCurrentUser() {
-        super("/current-user");
+        super("/current-user", CommandCategory.USER);
     }
 
     @Override

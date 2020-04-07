@@ -3,6 +3,7 @@ package input.commands.user;
 import adt.sql_tables.User;
 import input.InfoManager;
 import input.commands.Command;
+import input.commands.CommandCategory;
 import queries.user.GetUserFromCreds;
 
 import java.sql.Connection;
@@ -14,7 +15,7 @@ public class LoginCommand extends Command {
     private Connection conn;
 
     public LoginCommand(Connection conn) {
-        super("/login");
+        super("/login", CommandCategory.USER);
         this.conn = conn;
     }
 
