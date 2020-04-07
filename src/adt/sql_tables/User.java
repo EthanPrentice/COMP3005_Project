@@ -1,5 +1,8 @@
 package adt.sql_tables;
 
+import queries.cart.GetCart;
+
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -12,8 +15,6 @@ public class User extends SQLObject {
 
     private BillingInfo defaultBilling;
     private ShippingInfo defaultShipping;
-
-    private Cart cart;
 
     public User(ResultSet rs) throws SQLException {
         super(rs);
@@ -30,14 +31,19 @@ public class User extends SQLObject {
 //        cart = new Cart(rs);
     }
 
-    private ArrayList<PhoneNumber> getPhoneNumbers() {
+    private ArrayList<PhoneNumber> getPhoneNumbers(Connection conn) throws SQLException {
         // TODO: implement to run query getting user phone numbers
         return null;
     }
 
-    private ArrayList<Order> getOrders() {
+    private ArrayList<Order> getOrders(Connection conn) throws SQLException {
         // TODO: implement to run query getting user orders
         return null;
+    }
+
+    public Cart getCart(Connection conn) throws SQLException {
+        GetCart getCart = new GetCart(conn, id);
+        return getCart.get();
     }
 
     @Override

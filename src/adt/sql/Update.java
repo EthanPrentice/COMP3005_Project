@@ -16,12 +16,13 @@ public class Update {
     protected PreparedStatement stmt = null;
 
     public Update(Connection conn, String sqlFilename) throws SQLException {
+        this(conn, Paths.get(Config.getUpdatesPath().toString(), sqlFilename));
+    }
+
+    protected Update(Connection conn, Path fullRelativePath) throws SQLException {
         this.conn = conn;
-
-        Path filePath = Paths.get(Config.getUpdatesPath().toString(), sqlFilename);
-
         try {
-            FileReader fr = new FileReader(filePath.toString());
+            FileReader fr = new FileReader(fullRelativePath.toString());
             BufferedReader br = new BufferedReader(fr);
             StringBuilder sb = new StringBuilder();
 

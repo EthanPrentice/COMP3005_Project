@@ -1,12 +1,12 @@
 package inserts;
 
-import adt.sql.Update;
+import adt.sql.Insert;
 import adt.sql_tables.PersonName;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class InsertName extends Update {
+public class InsertName extends Insert {
 
     public InsertName(Connection conn, String first, String middle, String last, String prefix) throws SQLException {
         super(conn, "insert_name.sql");

@@ -5,6 +5,7 @@ public enum CommandCategory {
     ADMIN("Admin"),
     USER("User"),
     GENERAL("General"),
+    CART("Cart"),
     OTHER("Other");
 
 

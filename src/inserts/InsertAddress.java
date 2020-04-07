@@ -1,12 +1,12 @@
 package inserts;
 
-import adt.sql.Update;
+import adt.sql.Insert;
 import adt.sql_tables.Address;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class InsertAddress extends Update {
+public class InsertAddress extends Insert {
 
     public InsertAddress(Connection conn, Address address) throws SQLException {
         super(conn, "insert_address.sql");

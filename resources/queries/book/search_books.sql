@@ -10,8 +10,13 @@ FROM
     INNER JOIN published_by ON published_by.book_id = book.book_id
     INNER JOIN publisher ON publisher.publisher_id = published_by.publisher_id
 
+    INNER JOIN inventory ON inventory.book_id = book.book_id
+
 WHERE
-    book.title LIKE CONCAT('%', ?, '%')
-    OR book.genre LIKE CONCAT('%', ?, '%')
-    OR CONCAT(IFNULL(`name`.`first`, ''), ' ', IFNULL(`name`.`middle`, ''), IFNULL(`name`.`last`, '')) LIKE CONCAT('%', ?, '%')
-    OR publisher.publisher_name LIKE CONCAT('%', ?, '%')
+    inventory.quantity > 3
+    AND (
+        book.title LIKE CONCAT('%', ?, '%')
+        OR book.genre LIKE CONCAT('%', ?, '%')
+        OR CONCAT(IFNULL(`name`.`first`, ''), ' ', IFNULL(`name`.`middle`, ''), IFNULL(`name`.`last`, '')) LIKE CONCAT('%', ?, '%')
+        OR publisher.publisher_name LIKE CONCAT('%', ?, '%')
+    )

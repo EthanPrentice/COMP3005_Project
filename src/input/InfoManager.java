@@ -7,6 +7,10 @@ public class InfoManager {
     private static User currentUser = null;
 
 
+    public static boolean isLoggedIn() {
+        return currentUser != null;
+    }
+
     public static User getCurrentUser() {
         return currentUser;
     }

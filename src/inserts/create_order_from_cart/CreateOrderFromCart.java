@@ -1,10 +1,7 @@
 package inserts.create_order_from_cart;
 
 import adt.sql.MultiUpdate;
-import adt.sql_tables.BillingInfo;
-import adt.sql_tables.CartItem;
-import adt.sql_tables.ShippingInfo;
-import adt.sql_tables.User;
+import adt.sql_tables.*;
 import queries.GetCartOwner;
 import queries.GetItemsInCart;
 import inserts.clear_cart.ClearCart;
@@ -78,9 +75,12 @@ public class CreateOrderFromCart implements MultiUpdate {
         int soldItemId;
         ResultSet generatedKeys;
         for (CartItem item : items) {
+
+            Book book = item.getBook(conn);
+
             // insert sold item
-            float publisherRate = item.getBook().getSupplierPricing(conn).getPublisherRate();
-            insertSoldItem = new InsertSoldItem(conn, item.getBook().getPrice(), publisherRate, item.getQuantity());
+            float publisherRate = book.getSupplierPricing(conn).getPublisherRate();
+            insertSoldItem = new InsertSoldItem(conn, book.getPrice(), publisherRate, item.getQuantity());
             insertSoldItem.executeUpdate(false);
 
             generatedKeys = insertSoldItem.getGeneratedKeys();
@@ -88,7 +88,7 @@ public class CreateOrderFromCart implements MultiUpdate {
                 soldItemId = generatedKeys.getInt(1);
 
                 // add the sold item to it's relations to the book, and to the order
-                insertBookSold = new InsertBookSold(conn, soldItemId, item.getBook().getId());
+                insertBookSold = new InsertBookSold(conn, soldItemId, book.getId());
                 insertItemInOrder = new InsertItemInOrder(conn, soldItemId, orderId);
 
                 insertBookSold.executeUpdate(false);
@@ -147,7 +147,7 @@ public class CreateOrderFromCart implements MultiUpdate {
         ClearCart clearCartUpdate = new ClearCart(conn, cartId);
         clearCartUpdate.executeUpdate(false);
 
-        // if successful assign orderId so it can be accessed outside of Update object
+        // if successful assign orderId so it can be accessed outside of Insert object
         this.orderId = orderId;
 
         if (commit) {

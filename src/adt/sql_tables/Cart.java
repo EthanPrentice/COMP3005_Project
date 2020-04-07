@@ -1,5 +1,11 @@
 package adt.sql_tables;
 
+import deletions.DeleteCartItem;
+import inserts.add_cart_item.AddCartItem;
+import queries.cart.GetCartItems;
+import updates.cart.UpdateCartItem;
+
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -8,12 +14,7 @@ public class Cart extends SQLObject {
 
     private User ownedBy;
 
-    Cart() {
-        id = null;
-        ownedBy = null;
-    }
-
-    Cart(ResultSet rs) throws SQLException {
+    public Cart(ResultSet rs) throws SQLException {
         super(rs);
         id = rs.getInt("cart_id");
 
@@ -26,17 +27,30 @@ public class Cart extends SQLObject {
         this.ownedBy = ownedBy;
     }
 
-    public void addItem(CartItem item) {
-        // TODO: Add item to database
+    public void addItem(Connection conn, int bookId, int quantity) throws SQLException {
+        ArrayList<CartItem> items = getItems(conn);
+
+        for (CartItem item : items) {
+            if (item.getBook(conn).getId() == bookId) {
+                UpdateCartItem updateCartItem = new UpdateCartItem(conn, item.getId(), item.getQuantity() + quantity);
+                updateCartItem.executeUpdate();
+                return;
+            }
+        }
+
+        AddCartItem addCartItem = new AddCartItem(conn, id, bookId, quantity);
+        addCartItem.executeUpdates();
     }
 
-    public void removeItem(int itemId) {
-        // TODO: Remove item from database
+    public void removeItem(Connection conn, int itemIndex) throws SQLException {
+        ArrayList<CartItem> items = getItems(conn);
+        DeleteCartItem deleteCartItem = new DeleteCartItem(conn, items.get(itemIndex).getId());
+        deleteCartItem.executeUpdate();
     }
 
-    public ArrayList<CartItem> getItems() {
-        // TODO: implement to run query getting cart items
-        return null;
+    public ArrayList<CartItem> getItems(Connection conn) throws SQLException {
+        GetCartItems getCartItems = new GetCartItems(conn, id);
+        return getCartItems.get();
     }
 
     public User getOwnedBy() {

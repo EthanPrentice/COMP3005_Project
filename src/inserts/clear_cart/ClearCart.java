@@ -1,11 +1,11 @@
 package inserts.clear_cart;
 
-import adt.sql.Update;
+import adt.sql.Insert;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class ClearCart extends Update {
+public class ClearCart extends Insert {
 
     public ClearCart(Connection conn, Integer cartId) throws SQLException {
         super(conn, "clear_cart/delete_cart_items.sql");
