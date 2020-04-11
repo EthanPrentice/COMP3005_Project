@@ -56,6 +56,7 @@ public class CreateShippingInfo implements MultiUpdate {
 
     private int insertShippingInfo() throws SQLException {
         InsertShippingInfo insertShippingInfo = new InsertShippingInfo(conn);
+        insertShippingInfo.executeUpdate(false);
 
         ResultSet rs = insertShippingInfo.getGeneratedKeys();
         if (rs.next()) {

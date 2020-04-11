@@ -1,6 +1,8 @@
 package adt.sql_tables;
 
 import queries.cart.GetCart;
+import queries.user.GetUserBillingInfo;
+import queries.user.GetUserShippingInfo;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -13,8 +15,6 @@ public class User extends SQLObject {
     private String email;
     private boolean isAdmin;
 
-    private BillingInfo defaultBilling;
-    private ShippingInfo defaultShipping;
 
     public User(ResultSet rs) throws SQLException {
         super(rs);
@@ -23,12 +23,6 @@ public class User extends SQLObject {
         username = rs.getString("username");
         email = rs.getString("email");
         isAdmin = rs.getBoolean("is_admin");
-
-        // TODO: Change below to queries in getters
-//        defaultBilling = new BillingInfo(rs);
-//        defaultShipping = new ShippingInfo(rs);
-
-//        cart = new Cart(rs);
     }
 
     private ArrayList<PhoneNumber> getPhoneNumbers(Connection conn) throws SQLException {
@@ -39,6 +33,16 @@ public class User extends SQLObject {
     private ArrayList<Order> getOrders(Connection conn) throws SQLException {
         // TODO: implement to run query getting user orders
         return null;
+    }
+
+    public ShippingInfo getShippingInfo(Connection conn) throws SQLException {
+        GetUserShippingInfo getShippingInfo = new GetUserShippingInfo(conn, id);
+        return getShippingInfo.get();
+    }
+
+    public BillingInfo getBillingInfo(Connection conn) throws SQLException {
+        GetUserBillingInfo getBillingInfo = new GetUserBillingInfo(conn, id);
+        return getBillingInfo.get();
     }
 
     public Cart getCart(Connection conn) throws SQLException {

@@ -7,6 +7,7 @@ import queries.GetItemsInCart;
 import inserts.clear_cart.ClearCart;
 import inserts.create_billing_info.CreateBillingInfo;
 import inserts.create_shipping_info.CreateShippingInfo;
+import queries.cart.GetCartItems;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -18,16 +19,32 @@ public class CreateOrderFromCart implements MultiUpdate {
     private Connection conn;
 
     private int cartId;
-    private BillingInfo billingInfo;
-    private ShippingInfo shippingInfo;
+
+    private Address shippingAddress;
+    private Address billingAddress;
+
+    private PersonName shippingName;
+    private PersonName billingName;
 
     private Integer orderId = null;
 
     public CreateOrderFromCart(Connection conn, Integer cartId, BillingInfo billingInfo, ShippingInfo shippingInfo) throws SQLException {
         this.conn = conn;
         this.cartId = cartId;
-        this.billingInfo = billingInfo;
-        this.shippingInfo = shippingInfo;
+        this.billingAddress = billingInfo.getAddress(conn);
+        this.shippingAddress = shippingInfo.getAddress(conn);
+        this.billingName = billingInfo.getName(conn);
+        this.shippingName = shippingInfo.getName(conn);
+    }
+
+
+    public CreateOrderFromCart(Connection conn, Integer cartId, Address billingAddress, PersonName billingName, Address shippingAddress, PersonName shippingName) throws SQLException {
+        this.conn = conn;
+        this.cartId = cartId;
+        this.billingAddress = billingAddress;
+        this.shippingAddress = shippingAddress;
+        this.billingName = billingName;
+        this.shippingName = shippingName;
     }
 
 
@@ -103,7 +120,7 @@ public class CreateOrderFromCart implements MultiUpdate {
     }
 
     private int addBillingInfo(int orderId) throws SQLException {
-        CreateBillingInfo createBillingInfo = new CreateBillingInfo(conn, billingInfo.getName(), billingInfo.getAddress());
+        CreateBillingInfo createBillingInfo = new CreateBillingInfo(conn, billingName, billingAddress);
         createBillingInfo.executeUpdates(false);
 
         int billingInfoId = createBillingInfo.getBillingInfoId();
@@ -116,7 +133,7 @@ public class CreateOrderFromCart implements MultiUpdate {
 
 
     private int addShippingInfo(int orderId) throws SQLException {
-        CreateShippingInfo createShippingInfo = new CreateShippingInfo(conn, shippingInfo.getName(), shippingInfo.getAddress());
+        CreateShippingInfo createShippingInfo = new CreateShippingInfo(conn, shippingName, shippingAddress);
         createShippingInfo.executeUpdates(false);
 
         int shippingInfoId = createShippingInfo.getShippingInfoId();

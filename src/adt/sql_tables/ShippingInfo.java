@@ -1,41 +1,29 @@
 package adt.sql_tables;
 
+import queries.shipping_billing_info.GetShippingAddress;
+import queries.shipping_billing_info.GetShippingName;
+
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ShippingInfo extends SQLObject {
 
-    private PersonName name;
-    private Address address;
-
-    ShippingInfo(ResultSet rs) throws SQLException {
+    public ShippingInfo(ResultSet rs) throws SQLException {
         id = rs.getInt("shipping_info_id");
     }
 
-    ShippingInfo(PersonName name, Address address) {
-        this.name = name;
-        this.address = address;
+    public PersonName getName(Connection conn) throws SQLException {
+        GetShippingName getName = new GetShippingName(conn, id);
+        return getName.get();
     }
 
-    public PersonName getName() {
-        // TODO: implement query for this if id is null
-        if (id == null) {
-
-        }
-        else {
-            return name;
-        }
-        return null;
+    public Address getAddress(Connection conn) throws SQLException {
+        GetShippingAddress getAddress = new GetShippingAddress(conn, id);
+        return getAddress.get();
     }
 
-    public Address getAddress() {
-        // TODO: implement query for this if id is null
-        if (id == null) {
-
-        }
-        else {
-            return null;
-        }
-        return null;
+    public String toString(Connection conn) throws SQLException {
+        return String.format("%s,\n%s", getName(conn).getFull(), getAddress(conn).toString());
     }
 }

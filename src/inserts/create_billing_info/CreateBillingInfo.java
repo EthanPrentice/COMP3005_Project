@@ -55,6 +55,7 @@ public class CreateBillingInfo implements MultiUpdate {
 
     private int insertBillingInfo() throws SQLException {
         InsertBillingInfo insertBillingInfo = new InsertBillingInfo(conn);
+        insertBillingInfo.executeUpdate(false);
 
         ResultSet rs = insertBillingInfo.getGeneratedKeys();
         if (rs.next()) {

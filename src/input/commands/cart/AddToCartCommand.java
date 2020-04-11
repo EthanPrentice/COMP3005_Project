@@ -30,7 +30,7 @@ public class AddToCartCommand extends Command {
         }
 
         try {
-            System.out.print("Book ID: ");
+            System.out.print("Book ID (from /search): ");
             int bookId = Integer.parseInt(scanner.nextLine());
 
             System.out.print("Quantity: ");

@@ -1,5 +1,7 @@
 package adt.sql_tables;
 
+import adt.InputParser;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.StringJoiner;
@@ -28,6 +30,17 @@ public class PersonName extends SQLObject {
         this.middle = middle;
         this.last = last;
         this.prefix = prefix;
+    }
+
+    public static PersonName createFromUserInputs() {
+        InputParser parser = new InputParser(System.in);
+
+        String prefix = parser.getNextString("Prefix: ", true);
+        String first = parser.getNextString("First Name: ", true);
+        String middle = parser.getNextString("Middle Name(s): ", false);
+        String last = parser.getNextString("Last Name: ", true);
+
+        return new PersonName(first, middle, last, prefix);
     }
 
     public String getPrefix() {

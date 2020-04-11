@@ -2,6 +2,7 @@ package adt.sql_tables;
 
 import queries.GetSupplierPricing;
 import queries.book.GetBookAuthor;
+import queries.book.GetBookQuantity;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -61,6 +62,18 @@ public class Book extends SQLObject {
 
     public float getPrice() {
         return price;
+    }
+
+    public int getQuantity(Connection conn) throws SQLException {
+        GetBookQuantity getQuantity = new GetBookQuantity(conn, id);
+        Integer quantity = getQuantity.get();
+        
+        if (quantity != null) {
+            return quantity;
+        }
+        else {
+            return 0;
+        }
     }
 
     @Override

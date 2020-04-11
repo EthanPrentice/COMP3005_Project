@@ -33,26 +33,7 @@ public class ShowCartCommand extends Command {
             GetCart getCart = new GetCart(conn, InfoManager.getCurrentUser().getId());
             Cart cart = getCart.get();
 
-            ArrayList<CartItem> cartItems = cart.getItems(conn);
-
-            if (cartItems.isEmpty()) {
-                System.out.println("Cart is empty!");
-                return;
-            }
-
-            String headerString = "%4s | %-60s | %6s | %8s | %8s\n";
-            System.out.printf(headerString, "ID", "Book Title", "Price", "Quantity", "Subtotal");
-
-            DecimalFormat decimalFormat = new DecimalFormat("##0.00");
-
-            String formatString = "%4s | %-60s | %6s | %8s | %8s\n";
-            for (int i = 0; i < cartItems.size(); ++i) {
-                Book book = cartItems.get(i).getBook(conn);
-                String priceString = decimalFormat.format(book.getPrice());
-                String subtotalString = decimalFormat.format(cartItems.get(i).getSubtotal(conn));
-
-                System.out.printf(formatString, (i + 1), book.getTitle(), priceString, cartItems.get(i).getQuantity(), subtotalString);
-            }
+            System.out.println(cart.toString(conn));
         }
         catch (SQLException e) {
             System.out.println("Unable to access the user's cart.");

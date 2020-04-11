@@ -12,7 +12,7 @@ public class SupplierPricing extends SQLObject {
         super(rs);
 
         id = rs.getInt("supplier_pricing_id");
-        price = rs.getFloat("price");
+        price = rs.getFloat("purchase_price");
         publisherRate = rs.getFloat("publisher_rate");
     }
 

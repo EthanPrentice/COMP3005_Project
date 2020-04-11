@@ -32,7 +32,7 @@ public class RemoveFromCartCommand extends Command {
         try {
             Scanner scanner = new Scanner(System.in);
 
-            System.out.print("Cart Item ID: ");
+            System.out.print("Cart Item ID (from /show-cart): ");
             int cartItemIndex = Integer.parseInt(scanner.nextLine()) - 1;
 
             User user = InfoManager.getCurrentUser();

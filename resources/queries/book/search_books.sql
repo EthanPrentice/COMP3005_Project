@@ -1,5 +1,6 @@
 SELECT
-    book.*
+    book.*,
+    inventory.quantity
 FROM
     book
     NATURAL JOIN written_by

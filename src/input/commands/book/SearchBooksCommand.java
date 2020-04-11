@@ -3,6 +3,7 @@ package input.commands.book;
 import adt.sql_tables.Book;
 import input.commands.Command;
 import input.commands.CommandCategory;
+import queries.book.GetBookQuantity;
 import queries.book.SearchBooks;
 
 import java.sql.Connection;
@@ -36,17 +37,21 @@ public class SearchBooksCommand extends Command {
             SearchBooks searchBooks = new SearchBooks(conn, searchQuery.toString());
             ArrayList<Book> books = searchBooks.get();
 
-            String headerFormat = "%4s | %-7s | %-60s | %-35s | %-20s | %5s\n";
-            System.out.format(headerFormat, "ID", "Price", "Title", "Author", "Genre", "Pages");
+            String headerFormat = "%4s | %8s | %-7s | %-60s | %-35s | %-20s | %5s\n";
+            System.out.format(headerFormat, "ID", "Quantity", "Price", "Title", "Author", "Genre", "Pages");
 
+            GetBookQuantity getQuantity;
             DecimalFormat decimalFormat = new DecimalFormat("#0.00");
-            String formatString = "%4d | $%6s | %-60s | %-35s | %-20s | %5d\n";
+            String formatString = "%4d | %8d | $%6s | %-60s | %-35s | %-20s | %5d\n";
             for (Book book : books) {
-
                 String formattedPrice = decimalFormat.format(book.getPrice());
+
+                getQuantity = new GetBookQuantity(conn, book.getId());
+                int quantity = getQuantity.get();
 
                 System.out.printf(formatString,
                     book.getId(),
+                    quantity,
                     formattedPrice,
                     book.getTitle(),
                     book.getAuthor(conn).getName().getShort(),
