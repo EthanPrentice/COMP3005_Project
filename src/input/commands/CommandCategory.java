@@ -6,6 +6,7 @@ public enum CommandCategory {
     USER("User"),
     GENERAL("General"),
     CART("Cart"),
+    ORDERS("Orders"),
     OTHER("Other");
 
 

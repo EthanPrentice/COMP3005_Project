@@ -11,6 +11,7 @@ import input.commands.CommandCategory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class RemoveFromCartCommand extends Command {
@@ -37,8 +38,14 @@ public class RemoveFromCartCommand extends Command {
 
             User user = InfoManager.getCurrentUser();
             Cart userCart = user.getCart(conn);
+            ArrayList<CartItem> cartItems = userCart.getItems(conn);
 
-            Book deletedBook = userCart.getItems(conn).get(cartItemIndex).getBook(conn);
+            if (cartItemIndex >= cartItems.size()) {
+                System.out.println("Invalid index.");
+                return;
+            }
+
+            Book deletedBook = cartItems.get(cartItemIndex).getBook(conn);
             userCart.removeItem(conn, cartItemIndex);
 
             System.out.printf("Deleted %s from the cart.\n", deletedBook.getTitle());

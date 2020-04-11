@@ -5,6 +5,7 @@ import input.commands.admin.AdminCommand;
 import input.commands.admin.ShowPrevMonthSales;
 import input.commands.book.SearchBooksCommand;
 import input.commands.cart.*;
+import input.commands.order.ShowOrdersCommand;
 import input.commands.user.GetCurrentUser;
 import input.commands.user.LoginCommand;
 import input.commands.user.LogOutCommand;
@@ -31,6 +32,8 @@ public class CommandManager {
                 new RemoveFromCartCommand(conn),
                 new ClearCartCommand(conn),
                 new CheckoutCart(conn),
+
+                new ShowOrdersCommand(conn),
 
                 new SearchBooksCommand(conn),
 

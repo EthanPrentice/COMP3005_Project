@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class Order extends SQLObject {
@@ -14,11 +15,6 @@ public class Order extends SQLObject {
     private Timestamp shippedDate;
     private Timestamp estimatedDelivery;
     private boolean delivered;
-
-    private BillingInfo billingInfo;
-    private ShippingInfo shippingInfo;
-
-    private User orderedBy;
 
     public Order(ResultSet rs) throws SQLException {
         super(rs);
@@ -36,11 +32,13 @@ public class Order extends SQLObject {
     }
 
     public BillingInfo getBillingInfo() {
-        return billingInfo;
+        // TODO: Add query to get order's billing info
+        return null;
     }
 
     public ShippingInfo getShippingInfo() {
-        return shippingInfo;
+        // TODO: Add query to get order's shipping info
+        return null;
     }
 
     public Timestamp getPlacedDate() {
@@ -57,5 +55,32 @@ public class Order extends SQLObject {
 
     public boolean isDelivered() {
         return delivered;
+    }
+
+
+    public String toString(Connection conn) throws SQLException {
+        StringBuilder sb = new StringBuilder();
+
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMM-dd-yyyy");
+
+        String placedStr = dateFormatter.format(placedDate.toLocalDateTime());
+        String estimatedStr;
+        if (estimatedDelivery != null) {
+            estimatedStr = dateFormatter.format(estimatedDelivery.toLocalDateTime());
+        }
+        else {
+            estimatedStr = "none";
+        }
+
+        String formatStr = "Order %3d | Delivered: %b | Placed: %11s | Estimated Delivery: %11s\n";
+        sb.append(String.format(formatStr, id, delivered, placedStr, estimatedStr));
+
+        for (SoldItem item : getItems(conn)) {
+            sb.append('\t');
+            sb.append(item.toString(conn));
+            sb.append('\n');
+        }
+
+        return sb.toString();
     }
 }

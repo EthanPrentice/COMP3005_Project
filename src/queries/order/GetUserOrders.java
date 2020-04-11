@@ -1,4 +1,4 @@
-package queries;
+package queries.order;
 
 import adt.sql.BuildableQuery;
 import adt.sql_tables.Order;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class GetUserOrders extends BuildableQuery<ArrayList<Order>> {
 
     public GetUserOrders(Connection conn, Integer userId) throws SQLException {
-        super(conn, "get_user_orders.sql");
+        super(conn, "order/get_user_orders.sql");
         build(userId);
     }
 

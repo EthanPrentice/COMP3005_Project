@@ -1,5 +1,8 @@
 package adt.sql_tables;
 
+import queries.order.GetSoldItemBook;
+
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -20,6 +23,11 @@ public class SoldItem extends SQLObject {
         quantity = rs.getInt("quantity");
     }
 
+    public Book getBook(Connection conn) throws SQLException {
+        GetSoldItemBook getBook = new GetSoldItemBook(conn, id);
+        return getBook.get();
+    }
+
     public float getPricePerUnit() {
         return pricePerUnit;
     }
@@ -36,10 +44,11 @@ public class SoldItem extends SQLObject {
         return pricePerUnit * quantity;
     }
 
-    @Override
-    public String toString() {
-        String formatStr = "SoldItem(%3d, %3.2f, %2d, %s";
-        return String.format(formatStr, id, pricePerUnit, quantity, book.toString());
+
+    public String toString(Connection conn) throws SQLException {
+        String formatStr = "%-60s, Quantity: %3d";
+        Book book = getBook(conn);
+        return String.format(formatStr, book.getTitle(), quantity);
     }
 
 }
