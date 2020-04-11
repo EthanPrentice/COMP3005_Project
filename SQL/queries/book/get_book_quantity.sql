@@ -1,0 +1,1 @@
+SELECT * FROM inventory WHERE inventory.book_id = ?

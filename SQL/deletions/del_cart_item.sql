@@ -1,0 +1,1 @@
+DELETE FROM cart_item WHERE cart_item.cart_item_id = ?
